@@ -7,7 +7,7 @@ const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-proj
 // Extra runs conceded per team in the year 2016
 
 function extraRunsConcededPerTeam() {
-    let resultObject = {};
+    let accumulator = {};
 
     const matches2016 = matchesData.filter((match) => match.season === "2016");
 
@@ -21,7 +21,7 @@ function extraRunsConcededPerTeam() {
     }, {});
 
 
-    matches2016.reduce((acc, match) => {
+    matches2016.reduce((accumulator, match) => {
         let matchId = match.id;
         let deliveries = deliveriesMap[matchId];
 
@@ -29,24 +29,24 @@ function extraRunsConcededPerTeam() {
             let extraRuns = Number(delivery.extra_runs);
             let bowlingTeam = delivery.bowling_team;
     
-            if (!acc[bowlingTeam]) {
-                acc[bowlingTeam] = 0;
+            if (!accumulator[bowlingTeam]) {
+                accumulator[bowlingTeam] = 0;
             }
-            acc[bowlingTeam] += extraRuns;
+            accumulator[bowlingTeam] += extraRuns;
         });
 
-        return acc;
+        return accumulator;
 
     }, {});
 
 
-    return resultObject;
+    return accumulator;
 };
 
 
 
 const result = extraRunsConcededPerTeam();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/extraRunsConcededPerTeam.json';
+const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/3-extraRunsConcededPerTeam.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);

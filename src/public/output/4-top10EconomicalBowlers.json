@@ -1,0 +1,42 @@
+[
+  {
+    "bowler": "RN ten Doeschate",
+    "economyRate": 3.4285714285714284
+  },
+  {
+    "bowler": "J Yadav",
+    "economyRate": 4.833333333333333
+  },
+  {
+    "bowler": "V Kohli",
+    "economyRate": 5
+  },
+  {
+    "bowler": "S Nadeem",
+    "economyRate": 5.733333333333333
+  },
+  {
+    "bowler": "M de Lange",
+    "economyRate": 6.923076923076923
+  },
+  {
+    "bowler": "M Vijay",
+    "economyRate": 7
+  },
+  {
+    "bowler": "CH Gayle",
+    "economyRate": 7.384615384615385
+  },
+  {
+    "bowler": "S Gopal",
+    "economyRate": 7.666666666666667
+  },
+  {
+    "bowler": "Parvez Rasool",
+    "economyRate": 7.75
+  },
+  {
+    "bowler": "CJ Anderson",
+    "economyRate": 8.25
+  }
+]

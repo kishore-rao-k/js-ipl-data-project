@@ -3,21 +3,21 @@ const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-proj
 
 //Number of matches played per year for all the years in IPL.
 function matchesPlayedPerYear() {
-    return matchesData.reduce((matchCount, match) => {
+    return matchesData.reduce((accumulator, match) => {
         let year = match.season;
 
-        if (matchCount[year]) {
-            matchCount[year]++;
+        if (accumulator[year]) {
+            accumulator[year]++;
         } else {
-            matchCount[year] = 1;
+            accumulator[year] = 1;
         }
 
-        return matchCount;
+        return accumulator;
 
     }, {});
 }
 const result = matchesPlayedPerYear();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/matchesPlayedPerYear.json';
+const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/1-matchesPlayedPerYear.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);
