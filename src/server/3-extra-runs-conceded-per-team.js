@@ -8,7 +8,6 @@ const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-proj
 
 function extraRunsConcededPerTeam() {
     let accumulator = {};
-
     const matches2016 = matchesData.filter((match) => match.season === "2016");
 
     let deliveriesMap = deliveriesData.reduce((map, delivery) => {
@@ -20,29 +19,23 @@ function extraRunsConcededPerTeam() {
         return map;
     }, {});
 
-
-    matches2016.reduce((accumulator, match) => {
+    matches2016.forEach((match) => {
         let matchId = match.id;
         let deliveries = deliveriesMap[matchId];
 
         deliveries.forEach((delivery) => {
             let extraRuns = Number(delivery.extra_runs);
             let bowlingTeam = delivery.bowling_team;
-    
+
             if (!accumulator[bowlingTeam]) {
                 accumulator[bowlingTeam] = 0;
             }
             accumulator[bowlingTeam] += extraRuns;
         });
-
-        return accumulator;
-
-    }, {});
-
+    });
 
     return accumulator;
-};
-
+}
 
 
 const result = extraRunsConcededPerTeam();
