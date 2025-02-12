@@ -4,42 +4,36 @@ const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-proj
 
 
 // 6.Find a player who has won the highest number of Player of the Match awards for each seasons
+function HighestPlayerOfTheMatchPerSeason() {
+  const playerOfTheMatchEachSeason = matchesData.reduce((accumulator, match) => {
+    const { season, player_of_match } = match; 
 
- function HighestPlayerOfTheMatchPerSeason() {
-  const playerOfTheMatchEachSeason = {};
-
-  matchesData.forEach((match) => {
-    const { season, player_of_match } = match;
-
-    if (!playerOfTheMatchEachSeason[season]) {
-      playerOfTheMatchEachSeason[season] = {};
+    if (!accumulator[season]) {
+      accumulator[season] = {};
     }
-
-    if (!playerOfTheMatchEachSeason[season][player_of_match]) {
-      playerOfTheMatchEachSeason[season][player_of_match] = 0;
+    if (!accumulator[season][player_of_match]) {
+      accumulator[season][player_of_match] = 0;
     }
+    accumulator[season][player_of_match]++;
+    return accumulator;
+  }, {});
 
-    playerOfTheMatchEachSeason[season][player_of_match]++;
-  });
-
-  const HighestPlayerOfTheMatchPerSeason = {};
-
-  for (const season in playerOfTheMatchEachSeason) {
+  const HighestPlayerOfTheMatchPerSeason =  Object.keys(playerOfTheMatchEachSeason).reduce((accumulator, season) => {
     const playersInSeason = playerOfTheMatchEachSeason[season];
-    let topPlayer = { player: "", awards: 0 };
-
-    for (const player in playersInSeason) {
+    const topPlayer = Object.keys(playersInSeason).reduce((top, player) => {
       const awards = playersInSeason[player];
-      if (awards > topPlayer.awards) {
-        topPlayer = { player, awards };
+      if (awards > top.awards) {
+        return { player, awards };
       }
-    }
+      return top;
+    }, { player: "", awards: 0 });
 
-    HighestPlayerOfTheMatchPerSeason[season] = topPlayer;
-  }
+    accumulator[season] = topPlayer;
+    return accumulator;
+  }, {});
 
   return HighestPlayerOfTheMatchPerSeason;
-};
+}
 
 const result = HighestPlayerOfTheMatchPerSeason();
 

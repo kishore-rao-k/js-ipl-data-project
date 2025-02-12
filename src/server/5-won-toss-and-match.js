@@ -5,17 +5,16 @@ const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-proj
 //Find the number of times each team won the toss and also won the match
 function wonTossAndMatch() {
 
-  const winningTossMatches = matchesData.filter((match) => match.toss_winner === match.winner);
+  let winningTossMatches = matchesData.filter((match) => match.toss_winner === match.winner);
 
-  const tossMatchWon = winningTossMatches.reduce((accumulator, match) => {
-    const tossWinner = match.toss_winner;
+  let tossMatchWon = winningTossMatches.reduce((accumulator, match) => {
+    let tossWinner = match.toss_winner;
     if (!accumulator[tossWinner]) {
       accumulator[tossWinner] = 0;
     }
     accumulator[tossWinner]++;
     return accumulator;
   }, {});
-
   return tossMatchWon;
 };
 

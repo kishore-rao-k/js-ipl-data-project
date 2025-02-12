@@ -4,29 +4,27 @@ const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-proj
 
 //Number of matches won per team per year in IPL.
 function matchesWonPerTeamPerYear() {
-
-    return matchesData.reduce((accumulator, match) => {
-        let year = match.season;
-        let winner = match.winner;
+    let accumulator = {};
+    for (let i = 0; i < matchesData.length; i++) {
+        let year = matchesData[i].season;
+        let winner = matchesData[i].winner;
 
         if (!accumulator[winner]) {
             accumulator[winner] = {};
         }
-
-        if (accumulator[winner][year]) {
-            accumulator[winner][year]++;
-        } else {
+        if (!accumulator[winner][year]) {
             accumulator[winner][year] = 1;
         }
-
-        return accumulator;
-
-    }, {});
+        else {
+            accumulator[winner][year]++;
+        }
+    }
+    return accumulator;
 }
 
 
 const result = matchesWonPerTeamPerYear();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/2-matchesWonPerTeamPerYear.json';
+const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/2.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);
