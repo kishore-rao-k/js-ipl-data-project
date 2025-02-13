@@ -4,12 +4,11 @@ const deliveriesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-p
 
 //8.Find the highest number of times one player has been dismissed by another player
 function highestOfOnePlayerDismissedByAnotherPlayer() {
-    let accumulator = {};
-    for (let i = 0; i < deliveriesData.length; i++) {
-        let batsman = deliveriesData[i].batsman;
-        let bowler = deliveriesData[i].bowler;
+    let PlayerDismissedByAnotherPlayer = deliveriesData.reduce((accumulator, curr)=>{
+        let batsman = curr.batsman;
+        let bowler = curr.bowler;
 
-        if (deliveriesData[i].player_dismissed === batsman) {
+        if (curr.player_dismissed === batsman) {
 
             let key = `${batsman}_${bowler}`;
 
@@ -23,9 +22,10 @@ function highestOfOnePlayerDismissedByAnotherPlayer() {
                 };
             }
         }
-    }
+        return accumulator;
+    },{});
 
-    return Object.values(accumulator)
+    return Object.values(PlayerDismissedByAnotherPlayer)
         .sort((a, b) => b.dismissalCount - a.dismissalCount)
         .slice(0, 1);
 }
@@ -33,6 +33,6 @@ function highestOfOnePlayerDismissedByAnotherPlayer() {
 
 const result = highestOfOnePlayerDismissedByAnotherPlayer();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/8.json';
+const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/8-highestOfOnePlayerDismissedByAnotherPlayer.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);
