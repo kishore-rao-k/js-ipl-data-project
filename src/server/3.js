@@ -1,8 +1,8 @@
 
 import { readFileSync, writeFileSync } from 'fs';
 
-const deliveriesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-project/src/data/deliveries.json', 'utf-8'));
-const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-project/src/data/matches.json', 'utf-8'));
+const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
+const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 // Extra runs conceded per team in the year 2016
 
@@ -47,6 +47,6 @@ function extraRunsConcededPerTeam() {
 
 const result = extraRunsConcededPerTeam();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/3.json';
-writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
+const outputFile = './src/public/output/3.json';
+writeFileSync(outputFile, JSON.stringify(result, null, 2));
 console.log(`Output has been redirected to public/output dir`);

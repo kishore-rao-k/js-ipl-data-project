@@ -13,8 +13,8 @@ function bestEconomyInSuperOvers() {
         }
 
         let bowler = delivery.bowler;
-        let countlessRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
-        let totalRuns = parseInt(delivery.total_runs) - countlessRuns;
+        let excludeRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
+        let totalRuns = parseInt(delivery.total_runs) - excludeRuns;
         if (!acc[bowler]) {
             acc[bowler] = { balls: 0, runs: 0 };
         }
