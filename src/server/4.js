@@ -20,8 +20,8 @@ function top10EconomicalBowlers() {
 
         if (matches2015Set.has(delivery.match_id)) {
             let bowler = delivery.bowler;
-            let countlessRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
-            let totalRuns = parseInt(delivery.total_runs) - countlessRuns;
+            let excludedRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
+            let totalRuns = parseInt(delivery.total_runs) - excludedRuns;
 
         
             if (!bowlerEconomy[bowler]) {
@@ -40,11 +40,9 @@ function top10EconomicalBowlers() {
 
     let economyRates = [];
     for (let bowler in bowlerEconomy) {
-        if (bowlerEconomy.hasOwnProperty(bowler)) {
             let stats = bowlerEconomy[bowler];
-            let economy = (Math.round((stats.runs / stats.balls) * 6 * 100) / 100).toFixed(2);
+            let economy = (Math.round((stats.runs / stats.balls) * 6 * 100) / 100);
             economyRates.push({ bowler, economy });
-        }
     }
 
     economyRates.sort((a, b) => a.economy - b.economy);

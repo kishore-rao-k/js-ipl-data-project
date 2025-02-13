@@ -32,7 +32,7 @@ function bestEconomyInSuperOvers() {
     return Object.entries(bowlerEconomy)
         .map(([bowler, stats]) => ({
             bowler,
-            economy: (Math.round((stats.runs / stats.balls) * 6 * 100) / 100).toFixed(2)
+            economy: (Math.round((stats.runs / stats.balls) * 6 * 100) / 100)
         }))
         .sort((a, b) => a.economy - b.economy) 
         .slice(0, 1);  

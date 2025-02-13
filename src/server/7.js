@@ -16,7 +16,7 @@ function StrikeRatePerSeason() {
         }
         deliveriesByMatchId[matchId].push(delivery);
     }
-
+    // console.log(deliveriesByMatchId);
     for (let i = 0; i < matchesData.length; i++) {
         const matchData = matchesData[i];
         const matchId = matchData.id;
@@ -39,7 +39,7 @@ function StrikeRatePerSeason() {
                     strikeRateEachSeason[season][batsman] = { runs: 0, ballsFaced: 0 };
                 }
 
-                strikeRateEachSeason[season][batsman].runs += Number(runs);
+                strikeRateEachSeason[season][batsman].runs += parseInt(runs);
 
                 if (wide_runs === "0" && noball_runs === "0") {
                     strikeRateEachSeason[season][batsman].ballsFaced += 1;
@@ -65,6 +65,6 @@ function StrikeRatePerSeason() {
 
 const result = StrikeRatePerSeason();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/7-StrikeRatePerSeason.json';
+const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/7.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);
