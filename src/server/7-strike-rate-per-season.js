@@ -3,27 +3,28 @@ import { readFileSync, writeFileSync } from 'fs';
 const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
 const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
-
 //Find the strike rate of a batsman for each season
 function StrikeRatePerSeason() {
-    let acc = matchesData.reduce((accumulator, match) => {
-        let year = match.season;
-        let matchId = match.id;
+    let accumulator = {};
+
+    for (let i = 0; i < matchesData.length; i++) {
+        let year = matchesData[i].season;
+        let matchId = matchesData[i].id;
         if (!accumulator[year]) {
             accumulator[year] = [];
         }
         accumulator[year].push(matchId);
-        return accumulator;
-    }, {});
-    // console.log(acc);
+    }
 
-    let batsmanDataAcc = deliveriesData.reduce((batsmanData, deliveries) => {
+    // console.log(accumulator);
 
-        let batsman = deliveries.batsman;
-        let runs = parseInt(deliveries.batsman_runs);
-        let matchId = deliveries.match_id;
-        Object.entries(acc).forEach(([year, matches]) => {
-            if (matches.includes(matchId)) {
+    let batsmanData = {};
+    for (let i = 0; i < deliveriesData.length; i++) {
+        let batsman = deliveriesData[i].batsman;
+        let runs = parseInt(deliveriesData[i].batsman_runs);
+        let matchId = deliveriesData[i].match_id;
+        for (let year in accumulator) {
+            if (accumulator[year].includes(matchId)) {
 
                 if (!batsmanData[year]) {
                     batsmanData[year] = {};
@@ -32,34 +33,28 @@ function StrikeRatePerSeason() {
                     batsmanData[year][batsman] = { totalRuns: 0, ball: 0 };
                 }
                 batsmanData[year][batsman].totalRuns += runs;
-                if (deliveries.wide_runs === "0") {
+                if(deliveriesData[i].wide_runs === "0"){
                     batsmanData[year][batsman].ball += 1;
-                }
-
+                    }
             }
-        });
-        return batsmanData;
-    }, {});
-
-    // console.log(batsmanDataAcc);
-    let StrikeRate = Object.keys(batsmanDataAcc).reduce((acc, year) => {
-        acc[year] = Object.keys(batsmanDataAcc[year]).map(batsman => {
-            let totalRuns = batsmanDataAcc[year][batsman].totalRuns;
-            let balls = batsmanDataAcc[year][batsman].ball;
-            let strikeRate = parseFloat(((totalRuns / balls) * 100).toFixed(2));
-    
-            return {
+        }
+    }
+    // console.log(batsmanData);
+    let StrikeRate = {};
+    for (let year in batsmanData) {
+        StrikeRate[year] = [];
+        for (let batsman in batsmanData[year]) {
+            let totalRuns = batsmanData[year][batsman].totalRuns;
+            let balls = batsmanData[year][batsman].ball;
+            let strikeRate = parseFloat(((totalRuns / balls) * 100).toFixed(2))
+            StrikeRate[year].push({
                 batsman: batsman,
                 strikeRate: strikeRate
-            };
-        });
-        return acc;
-    }, {});
-    
+            });
+        }
+    }
     return StrikeRate;
- 
 }
-
 
 
 const result = StrikeRatePerSeason();

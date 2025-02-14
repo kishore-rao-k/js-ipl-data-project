@@ -4,39 +4,45 @@ const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
 
 //Find the bowler with the best economy in super overs
 function bestEconomyInSuperOvers() {
-    let bowlerEconomy = deliveriesData.reduce((acc, delivery) => {
+    let bowlerEconomy = {};
+    for (let i = 0; i < deliveriesData.length; i++) {
+        let delivery = deliveriesData[i];
         let isSuperOver = delivery.is_super_over;
-        
+
         if (isSuperOver === "0") {
-            return acc;
+            continue;
         }
+
 
         let bowler = delivery.bowler;
-        let excludeRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
-        let totalRuns = parseInt(delivery.total_runs) - excludeRuns;
-        if (!acc[bowler]) {
-            acc[bowler] = { balls: 0, runs: 0 };
+        let excludedRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
+        let totalRuns = parseInt(delivery.total_runs) - excludedRuns;
+
+
+        if (!bowlerEconomy[bowler]) {
+            bowlerEconomy[bowler] = { balls: 0, runs: 0 };
         }
+
 
         if (delivery.wide_runs === "0" && delivery.noball_runs === "0") {
-            acc[bowler].balls += 1;
+            bowlerEconomy[bowler].balls += 1;
         }
 
 
-        acc[bowler].runs += totalRuns;
+        bowlerEconomy[bowler].runs += totalRuns;
+    }
 
-        return acc; 
-    }, {});
 
-    return Object.entries(bowlerEconomy)
-        .map(([bowler, stats]) => ({
-            bowler,
-            economy: (Math.round((stats.runs / stats.balls) * 6 * 100) / 100)
-        }))
-        .sort((a, b) => a.economy - b.economy) 
-        .slice(0, 1);  
+    let economyRates = [];
+    for (let bowler in bowlerEconomy) {
+        let stats = bowlerEconomy[bowler];
+        let economy = (Math.round((stats.runs / stats.balls) * 6 * 100) / 100);
+        economyRates.push({ bowler, economy });
+    }
+
+    economyRates.sort((a, b) => a.economy - b.economy);
+    return economyRates.slice(0, 1);
 }
-
 const result = bestEconomyInSuperOvers();
 
 const outputFile = './src/public/output/9-bestEconomyInSuperOvers.json';

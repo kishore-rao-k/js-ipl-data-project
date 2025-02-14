@@ -4,19 +4,18 @@ const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 //Find the number of times each team won the toss and also won the match
 function wonTossAndMatch() {
-
-  let winningTossMatches = matchesData.filter((match) => match.toss_winner === match.winner);
-
-  let tossMatchWon = winningTossMatches.reduce((accumulator, match) => {
-    let tossWinner = match.toss_winner;
-    if (!accumulator[tossWinner]) {
-      accumulator[tossWinner] = 0;
+    let obj = {};
+    for(let i =0;i<matchesData.length;i++){
+        if(matchesData[i].toss_winner === matchesData[i].winner){
+            if(!obj[matchesData[i].winner]){
+                obj[matchesData[i].winner] = 1;
+            }else{
+            obj[matchesData[i].winner]++;
+            }
+        }
     }
-    accumulator[tossWinner]++;
-    return accumulator;
-  }, {});
-  return tossMatchWon;
-};
+    return obj;
+}
 
 const result = wonTossAndMatch();
 

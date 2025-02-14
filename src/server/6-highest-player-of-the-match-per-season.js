@@ -5,35 +5,43 @@ const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 // 6.Find a player who has won the highest number of Player of the Match awards for each seasons
 function HighestPlayerOfTheMatchPerSeason() {
-  const playerOfTheMatchEachSeason = matchesData.reduce((accumulator, match) => {
-    const { season, player_of_match } = match; 
-
-    if (!accumulator[season]) {
-      accumulator[season] = {};
-    }
-    if (!accumulator[season][player_of_match]) {
-      accumulator[season][player_of_match] = 0;
-    }
-    accumulator[season][player_of_match]++;
-    return accumulator;
-  }, {});
-
-  const HighestPlayerOfTheMatchPerSeason =  Object.keys(playerOfTheMatchEachSeason).reduce((accumulator, season) => {
-    const playersInSeason = playerOfTheMatchEachSeason[season];
-    const topPlayer = Object.keys(playersInSeason).reduce((top, player) => {
-      const awards = playersInSeason[player];
-      if (awards > top.awards) {
-        return { player, awards };
+   
+    let playerOfTheMatchEachSeason = {};
+  
+    for (let i = 0; i < matchesData.length; i++) {
+        let season = matchesData[i].season;
+        let player_of_match = matchesData[i].player_of_match;
+  
+      if (!playerOfTheMatchEachSeason[season]) {
+        playerOfTheMatchEachSeason[season] = {};
       }
-      return top;
-    }, { player: "", awards: 0 });
+  
+      if (!playerOfTheMatchEachSeason[season][player_of_match]) {
+        playerOfTheMatchEachSeason[season][player_of_match] = 0;
+      }
+  
+      playerOfTheMatchEachSeason[season][player_of_match]++;
+    }
 
-    accumulator[season] = topPlayer;
-    return accumulator;
-  }, {});
-
-  return HighestPlayerOfTheMatchPerSeason;
-}
+    let HighestPlayerOfTheMatchPerSeason = {};
+  
+    for (let season in playerOfTheMatchEachSeason) {
+      let playersInSeason = playerOfTheMatchEachSeason[season];
+      let topPlayer = { player: "", awards: 0 };
+  
+      for (let player in playersInSeason) {
+        const awards = playersInSeason[player];
+        if (awards > topPlayer.awards) {
+          topPlayer = { player, awards };
+        }
+      }
+  
+      HighestPlayerOfTheMatchPerSeason[season] = topPlayer;
+    }
+  
+    return HighestPlayerOfTheMatchPerSeason;
+  }
+  
 
 const result = HighestPlayerOfTheMatchPerSeason();
 

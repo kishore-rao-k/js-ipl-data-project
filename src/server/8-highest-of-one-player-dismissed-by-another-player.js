@@ -4,11 +4,12 @@ const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
 
 //8.Find the highest number of times one player has been dismissed by another player
 function highestOfOnePlayerDismissedByAnotherPlayer() {
-    let PlayerDismissedByAnotherPlayer = deliveriesData.reduce((accumulator, curr)=>{
-        let batsman = curr.batsman;
-        let bowler = curr.bowler;
+    let accumulator = {};
+    for (let i = 0; i < deliveriesData.length; i++) {
+        let batsman = deliveriesData[i].batsman;
+        let bowler = deliveriesData[i].bowler;
 
-        if (curr.player_dismissed === batsman) {
+        if (deliveriesData[i].player_dismissed === batsman) {
 
             let key = `${batsman}_${bowler}`;
 
@@ -22,10 +23,9 @@ function highestOfOnePlayerDismissedByAnotherPlayer() {
                 };
             }
         }
-        return accumulator;
-    },{});
+    }
 
-    return Object.values(PlayerDismissedByAnotherPlayer)
+    return Object.values(accumulator)
         .sort((a, b) => b.dismissalCount - a.dismissalCount)
         .slice(0, 1);
 }
