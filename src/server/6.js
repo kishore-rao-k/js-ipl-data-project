@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 
-const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-project/src/data/matches.json', 'utf-8'));
+const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 
 // 6.Find a player who has won the highest number of Player of the Match awards for each seasons
@@ -44,6 +44,6 @@ function HighestPlayerOfTheMatchPerSeason() {
   
 const result = HighestPlayerOfTheMatchPerSeason();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/6.json';
+const outputFile = './src/public/output/6.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);

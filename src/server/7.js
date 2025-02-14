@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'fs';
 
-const deliveriesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-project/src/data/deliveries.json', 'utf-8'));
-const matchesData = JSON.parse(readFileSync('/home/kishore-k/mb/js-ipl-data-project/src/data/matches.json', 'utf-8'));
+const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
+const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 //Find the strike rate of a batsman for each season
 function StrikeRatePerSeason() {
@@ -21,9 +21,8 @@ function StrikeRatePerSeason() {
     let batsmanData = {};
     for (let i = 0; i < deliveriesData.length; i++) {
         let batsman = deliveriesData[i].batsman;
-        let runs = parseInt(deliveriesData[i].total_runs);
+        let runs = parseInt(deliveriesData[i].batsman_runs);
         let matchId = deliveriesData[i].match_id;
-        let ball = 0;
         for (let year in accumulator) {
             if (accumulator[year].includes(matchId)) {
 
@@ -34,8 +33,9 @@ function StrikeRatePerSeason() {
                     batsmanData[year][batsman] = { totalRuns: 0, ball: 0 };
                 }
                 batsmanData[year][batsman].totalRuns += runs;
-                batsmanData[year][batsman].ball += 1;
-                break;
+                if(deliveriesData[i].wide_runs === "0"){
+                    batsmanData[year][batsman].ball += 1;
+                    }
             }
         }
     }
@@ -46,7 +46,7 @@ function StrikeRatePerSeason() {
         for (let batsman in batsmanData[year]) {
             let totalRuns = batsmanData[year][batsman].totalRuns;
             let balls = batsmanData[year][batsman].ball;
-            let strikeRate = (totalRuns / balls) * 100
+            let strikeRate = parseFloat(((totalRuns / balls) * 100).toFixed(2))
             StrikeRate[year].push({
                 batsman: batsman,
                 strikeRate: strikeRate
@@ -60,6 +60,6 @@ function StrikeRatePerSeason() {
 
 const result = StrikeRatePerSeason();
 
-const outputFile = '/home/kishore-k/mb/js-ipl-data-project/src/public/output/7.json';
+const outputFile = './src/public/output/7.json';
 writeFileSync(outputFile, JSON.stringify(result, null, 2), 'utf-8');
 console.log(`Output has been redirected to public/output dir`);
