@@ -3,18 +3,22 @@ import { readFileSync, writeFileSync } from 'fs';
 const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 //Find the number of times each team won the toss and also won the match
+// check if winner == tossEinner
+// increase count
 function wonTossAndMatch() {
-    let obj = {};
-    for(let i =0;i<matchesData.length;i++){
-        if(matchesData[i].toss_winner === matchesData[i].winner){
-            if(!obj[matchesData[i].winner]){
-                obj[matchesData[i].winner] = 1;
-            }else{
-            obj[matchesData[i].winner]++;
-            }
-        }
+  let accumulator = {};
+  for (let i = 0; i < matchesData.length; i++) {
+    let winner = matchesData[i].winner;
+    let tossWinner = matchesData[i].toss_winner;
+    if (winner === tossWinner) {
+      if (!accumulator[winner]) {
+        accumulator[winner] = 1;
+      } else {
+        accumulator[winner]++;
+      }
     }
-    return obj;
+  }
+  return accumulator;
 }
 
 const result = wonTossAndMatch();

@@ -1,47 +1,43 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs'
 
-const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
-
+let deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
 //Find the bowler with the best economy in super overs
+// check if it's a super over
+// calculate economy
+// sort and return one bowler with economy
 function bestEconomyInSuperOvers() {
-    let bowlerEconomy = {};
+    let runsAndBalls = {};
     for (let i = 0; i < deliveriesData.length; i++) {
-        let delivery = deliveriesData[i];
-        let isSuperOver = delivery.is_super_over;
-
+        let isSuperOver = deliveriesData[i].is_super_over;
         if (isSuperOver === "0") {
             continue;
         }
 
-
-        let bowler = delivery.bowler;
-        let excludedRuns = (parseInt(delivery.bye_runs) + parseInt(delivery.legbye_runs) + parseInt(delivery.penalty_runs));
-        let totalRuns = parseInt(delivery.total_runs) - excludedRuns;
-
-
-        if (!bowlerEconomy[bowler]) {
-            bowlerEconomy[bowler] = { balls: 0, runs: 0 };
+        let bowler = deliveriesData[i].bowler;
+        let runs = parseInt(deliveriesData[i].total_runs);
+        let runsExcluded = parseInt(deliveriesData[i].bye_runs) + parseInt(deliveriesData[i].legbye_runs) + parseInt(deliveriesData[i].penalty_runs);
+        let finalRun = runs - runsExcluded;
+        if (!runsAndBalls[bowler]) {
+            runsAndBalls[bowler] = { totalRuns: 0, balls: 0 };
         }
+        runsAndBalls[bowler].totalRuns += finalRun;
 
-
-        if (delivery.wide_runs === "0" && delivery.noball_runs === "0") {
-            bowlerEconomy[bowler].balls += 1;
+        if (deliveriesData[i].noball_runs === "0" && deliveriesData[i].wide_runs === "0") {
+            runsAndBalls[bowler].balls++;
         }
-
-
-        bowlerEconomy[bowler].runs += totalRuns;
     }
-
-
-    let economyRates = [];
-    for (let bowler in bowlerEconomy) {
-        let stats = bowlerEconomy[bowler];
-        let economy = (Math.round((stats.runs / stats.balls) * 6 * 100) / 100);
-        economyRates.push({ bowler, economy });
+    // console.log(runsAndBalls);
+    let result = [];
+    for (let bowler in runsAndBalls) {
+        let runs = runsAndBalls[bowler].totalRuns;
+        let balls = runsAndBalls[bowler].balls;
+        let economy = (Math.round((runs / balls) * 6 * 100) / 100)
+        result.push({ bowler: bowler, economy: economy });
     }
+    return result
+        .sort((a, b) => a.economy - b.economy)
+        .slice(0, 1);
 
-    economyRates.sort((a, b) => a.economy - b.economy);
-    return economyRates.slice(0, 1);
 }
 const result = bestEconomyInSuperOvers();
 

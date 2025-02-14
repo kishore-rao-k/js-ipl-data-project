@@ -5,43 +5,32 @@ const deliveriesData = JSON.parse(readFileSync('./src/data/deliveries.json'));
 const matchesData = JSON.parse(readFileSync('./src/data/matches.json'));
 
 // Extra runs conceded per team in the year 2016
-
+// filter 2016 and get matchId
+// count extraruns per team
 function extraRunsConcededPerTeam() {
-    let matches2016 = [];
+    let accumulator = [];
     for (let i = 0; i < matchesData.length; i++) {
-        if (matchesData[i].season === "2016") {
-            matches2016.push(matchesData[i]);
+        let year = matchesData[i].season;
+        let matchId = matchesData[i].id;
+        if (year === "2016") {
+            accumulator.push(matchId);
         }
     }
-
-    let matchDeliveriesMap = {};
+    let teamRunAcc = {};
     for (let i = 0; i < deliveriesData.length; i++) {
         let matchId = deliveriesData[i].match_id;
-        if (!matchDeliveriesMap[matchId]) {
-            matchDeliveriesMap[matchId] = [];
-        }
-        matchDeliveriesMap[matchId].push(deliveriesData[i]);
-    }
-
-    let accumulator = {};
-    for (let i = 0; i < matches2016.length; i++) {
-        let match = matches2016[i];
-        const matchId = match.id;
-        const deliveries = matchDeliveriesMap[matchId];
-
-        for (let j = 0; j < deliveries.length; j++) {
-            const delivery = deliveries[j];
-            const extraRuns = parseInt(delivery.extra_runs);
-            const bowlingTeam = delivery.bowling_team;
-
-            if (!accumulator[bowlingTeam]) {
-                accumulator[bowlingTeam] = 0;
+        let team = deliveriesData[i].bowling_team;
+        let extraRuns = parseInt(deliveriesData[i].extra_runs);
+        if (accumulator.includes(matchId)) {
+            if (!teamRunAcc[team]) {
+                teamRunAcc[team] = extraRuns;
+            } else {
+                teamRunAcc[team] += extraRuns;
             }
-            accumulator[bowlingTeam] += extraRuns;
+
         }
     }
-
-    return accumulator;
+    return teamRunAcc;
 }
 
 
