@@ -1,42 +1,42 @@
 {
   "2008": {
-    "player": "SE Marsh",
-    "awards": 5
+    "Player": "SE Marsh",
+    "Count": 5
   },
   "2009": {
-    "player": "YK Pathan",
-    "awards": 3
+    "Player": "YK Pathan",
+    "Count": 3
   },
   "2010": {
-    "player": "SR Tendulkar",
-    "awards": 4
+    "Player": "SR Tendulkar",
+    "Count": 4
   },
   "2011": {
-    "player": "CH Gayle",
-    "awards": 6
+    "Player": "CH Gayle",
+    "Count": 6
   },
   "2012": {
-    "player": "CH Gayle",
-    "awards": 5
+    "Player": "CH Gayle",
+    "Count": 5
   },
   "2013": {
-    "player": "MEK Hussey",
-    "awards": 5
+    "Player": "MEK Hussey",
+    "Count": 5
   },
   "2014": {
-    "player": "GJ Maxwell",
-    "awards": 4
+    "Player": "GJ Maxwell",
+    "Count": 4
   },
   "2015": {
-    "player": "DA Warner",
-    "awards": 4
+    "Player": "DA Warner",
+    "Count": 4
   },
   "2016": {
-    "player": "V Kohli",
-    "awards": 5
+    "Player": "V Kohli",
+    "Count": 5
   },
   "2017": {
-    "player": "BA Stokes",
-    "awards": 3
+    "Player": "BA Stokes",
+    "Count": 3
   }
 }
