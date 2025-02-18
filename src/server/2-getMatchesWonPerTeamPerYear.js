@@ -3,18 +3,17 @@ const matchesData = JSON.parse(readFileSync("./src/data/matches.json"));
 
 //Number of matches won per team per year in IPL.
 function getMatchesWonPerTeamPerYear() {
-  return matchesData.reduce((result, match) => {
-    const seasonYear = match.season;
-    const winningTeam = match.winner;
-    if (!result[winningTeam]) {
-      result[winningTeam] = {};
+  return matchesData.reduce((matchesWonPerTeamPerYear, match) => {
+    const { season, winner } = match;
+    if (!matchesWonPerTeamPerYear[winner]) {
+      matchesWonPerTeamPerYear[winner] = {};
     }
-    if (result[winningTeam][seasonYear]) {
-      result[winningTeam][seasonYear]++;
+    if (matchesWonPerTeamPerYear[winner][season]) {
+      matchesWonPerTeamPerYear[winner][season]++;
     } else {
-      result[winningTeam][seasonYear] = 1;
+      matchesWonPerTeamPerYear[winner][season] = 1;
     }
-    return result;
+    return matchesWonPerTeamPerYear;
   }, {});
 }
 

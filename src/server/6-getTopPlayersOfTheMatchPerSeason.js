@@ -6,15 +6,14 @@ const matchesData = JSON.parse(readFileSync("./src/data/matches.json"));
 function getTopPlayersOfTheMatchPerSeason() {
   let playerOfTheMatchCountBySeason = matchesData.reduce(
     (playerOfTheMatchCountBySeason, match) => {
-      const seasonYear = match.season;
-      const playerOfMatch = match.player_of_match;
-      if (!playerOfTheMatchCountBySeason[seasonYear]) {
-        playerOfTheMatchCountBySeason[seasonYear] = {};
+      const { season, player_of_match } = match;
+      if (!playerOfTheMatchCountBySeason[season]) {
+        playerOfTheMatchCountBySeason[season] = {};
       }
-      if (!playerOfTheMatchCountBySeason[seasonYear][playerOfMatch]) {
-        playerOfTheMatchCountBySeason[seasonYear][playerOfMatch] = 1;
+      if (!playerOfTheMatchCountBySeason[season][player_of_match]) {
+        playerOfTheMatchCountBySeason[season][player_of_match] = 1;
       } else {
-        playerOfTheMatchCountBySeason[seasonYear][playerOfMatch]++;
+        playerOfTheMatchCountBySeason[season][player_of_match]++;
       }
       return playerOfTheMatchCountBySeason;
     },

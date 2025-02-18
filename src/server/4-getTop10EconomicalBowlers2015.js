@@ -6,10 +6,9 @@ const matchesData = JSON.parse(readFileSync("./src/data/matches.json"));
 //Top 10 economical bowlers in the year 2015
 function getTop10EconomicalBowlers2015() {
   let matchIds2015 = matchesData.reduce((matchIds2015, match) => {
-    let year = match.season;
-    let matchId = match.id;
-    if (year === "2015") {
-      matchIds2015.push(matchId);
+    const { season, id } = match;
+    if (season === "2015") {
+      matchIds2015.push(id);
     }
     return matchIds2015;
   }, []);

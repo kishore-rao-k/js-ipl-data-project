@@ -6,12 +6,11 @@ const matchesData = JSON.parse(readFileSync("./src/data/matches.json"));
 //Find the strike rate of a batsman for each season
 function getStrikeRatePerSeason() {
   let seasonToMatchIds = matchesData.reduce((seasonToMatchIds, match) => {
-    const year = match.season;
-    const matchId = match.id;
-    if (!seasonToMatchIds[year]) {
-      seasonToMatchIds[year] = [];
+    const { season, id } = match;
+    if (!seasonToMatchIds[season]) {
+      seasonToMatchIds[season] = [];
     }
-    seasonToMatchIds[year].push(matchId);
+    seasonToMatchIds[season].push(id);
     return seasonToMatchIds;
   }, {});
 

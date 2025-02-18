@@ -10,7 +10,6 @@ function getBestEconomyInSuperOvers() {
 
   let bowlerStats = superOverDeliveries.reduce((bowlerStats, delivery) => {
     const bowler = delivery.bowler;
-    const matchId = delivery.match_id;
     const runs = parseInt(delivery.total_runs);
     const excludedRuns =
       parseInt(delivery.bye_runs) +

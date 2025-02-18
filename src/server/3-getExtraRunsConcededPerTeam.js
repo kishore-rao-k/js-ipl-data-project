@@ -5,23 +5,21 @@ const matchesData = JSON.parse(readFileSync("./src/data/matches.json"));
 // Extra runs conceded per team in the year 2016
 function getExtraRunsConcededPerTeam() {
   let matchIds2016 = matchesData.reduce((matchIds2016, match) => {
-    const seasonYear = match.season;
-    const matchId = match.id;
-    if (seasonYear === "2016") {
-      matchIds2016.add(matchId);
+    const { season, id } = match;
+    if (season === "2016") {
+      matchIds2016.add(id);
     }
     return matchIds2016;
   }, new Set());
 
   let extraRunsPerTeam = deliveriesData.reduce((extraRunsPerTeam, delivery) => {
-    const extraRuns = parseInt(delivery.extra_runs);
-    const matchId = delivery.match_id;
-    const bowlingTeam = delivery.bowling_team;
-    if (matchIds2016.has(matchId)) {
-      if (!extraRunsPerTeam[bowlingTeam]) {
-        extraRunsPerTeam[bowlingTeam] = extraRuns;
+    const { match_id, bowling_team, extra_runs } = delivery;
+    const extraRuns = parseInt(extra_runs);
+    if (matchIds2016.has(match_id)) {
+      if (!extraRunsPerTeam[bowling_team]) {
+        extraRunsPerTeam[bowling_team] = extraRuns;
       } else {
-        extraRunsPerTeam[bowlingTeam] += extraRuns;
+        extraRunsPerTeam[bowling_team] += extraRuns;
       }
     }
     return extraRunsPerTeam;

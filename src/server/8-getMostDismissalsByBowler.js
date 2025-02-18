@@ -6,10 +6,8 @@ const deliveriesData = JSON.parse(readFileSync("./src/data/deliveries.json"));
 function getMostDismissalsByBowler() {
   let dismissalsByBowlerBatsman = deliveriesData.reduce(
     (dismissalsByBowlerBatsman, delivery) => {
-      const playerDismissed = delivery.player_dismissed;
-      const batsman = delivery.batsman;
-      const bowler = delivery.bowler;
-      if (playerDismissed === batsman) {
+      const { player_dismissed, batsman, bowler } = delivery;
+      if (player_dismissed === batsman) {
         let batsmanBowlerKey = `${batsman}_${bowler}`;
         if (!dismissalsByBowlerBatsman[batsmanBowlerKey]) {
           dismissalsByBowlerBatsman[batsmanBowlerKey] = {

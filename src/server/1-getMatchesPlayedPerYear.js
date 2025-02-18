@@ -3,14 +3,14 @@ const matchesData = JSON.parse(readFileSync("./src/data/matches.json"));
 
 //Number of matches played per year for all the years in IPL.
 function getMatchesPlayedPerYear() {
-  return matchesData.reduce((matchesPerYear, match) => {
-    const seasonYear = match.season;
-    if (matchesPerYear[seasonYear]) {
-      matchesPerYear[seasonYear]++;
+  return matchesData.reduce((matchesPlayedPerYear, match) => {
+    const { season } = match;
+    if (matchesPlayedPerYear[season]) {
+      matchesPlayedPerYear[season]++;
     } else {
-      matchesPerYear[seasonYear] = 1;
+      matchesPlayedPerYear[season] = 1;
     }
-    return matchesPerYear;
+    return matchesPlayedPerYear;
   }, {});
 }
 
